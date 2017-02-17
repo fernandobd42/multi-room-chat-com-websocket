@@ -19,6 +19,8 @@ io.on('connection', function(socket){
     });
 
     socket.on('msgParaServidor', function(data){
+
+        // dialogo
         socket.emit(
             'msgParaCliente',
             {nome: data.nome, mensagem: data.mensagem}
@@ -28,5 +30,18 @@ io.on('connection', function(socket){
             'msgParaCliente',
             {nome: data.nome, mensagem: data.mensagem}
         );
+
+        // participantes
+        if(parseInt(data.nome_atualizado) == 0){
+            socket.emit(
+                'participantesParaCliente',
+                {nome: data.nome, mensagem: data.mensagem}
+            );
+
+            socket.broadcast.emit(
+                'participantesParaCliente',
+                {nome: data.nome, mensagem: data.mensagem}
+            );
+        }
     });
 });
